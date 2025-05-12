@@ -76,10 +76,8 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("mouseup", endDrag);
 
     // Touch Events with improved handling
-    europeMap.addEventListener("touchstart", startDragTouch, {
-      passive: false,
-    });
-    document.addEventListener("touchmove", dragTouch, { passive: false });
+    europeMap.addEventListener("touchstart", startDragTouch, { passive: true });
+    document.addEventListener("touchmove", dragTouch, { passive: true });
     document.addEventListener("touchend", endDragTouch);
   }
 
@@ -101,7 +99,6 @@ document.addEventListener("DOMContentLoaded", function () {
       offsetX = currentX;
       offsetY = currentY;
       europeMap.classList.add("grabbing");
-      e.preventDefault();
     }
   }
 
@@ -122,7 +119,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const y = e.touches[0].clientY;
 
     updateMapPosition(x, y);
-    e.preventDefault();
   }
 
   function updateMapPosition(x, y) {
@@ -130,9 +126,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const deltaX = x - startX;
     const deltaY = y - startY;
 
-    // Apply movement boundaries
-    currentX = Math.min(Math.max(offsetX + deltaX, -300), 0);
-    currentY = Math.min(Math.max(offsetY + deltaY, -200), 0);
+    // Apply movement boundaries with larger range for mobile
+    const maxX = window.innerWidth < 768 ? -400 : -300;
+    const maxY = window.innerWidth < 768 ? -300 : -200;
+
+    currentX = Math.min(Math.max(offsetX + deltaX, maxX), 0);
+    currentY = Math.min(Math.max(offsetY + deltaY, maxY), 0);
 
     // Update map position with hardware acceleration
     europeMap.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
@@ -236,17 +235,51 @@ document.addEventListener("DOMContentLoaded", function () {
     quizScreen.classList.remove("active");
     videoScreen.classList.add("active");
 
-    promoVideo.src = "_materials/ulajh.mp4";
+    // Reset video state
+    promoVideo.pause();
+    promoVideo.currentTime = 0;
     promoVideo.muted = true;
+    promoVideo.src = "_materials/ulajh.mp4";
 
-    setTimeout(() => {
-      promoVideo.play().catch((error) => {
-        console.log("Video play failed:", error);
-      });
-    }, 500);
+    // Add playsinline attribute for iOS
+    promoVideo.setAttribute("playsinline", "");
+    promoVideo.setAttribute("webkit-playsinline", "");
+
+    // Force video to load
+    promoVideo.load();
+
+    // Try to play video with user interaction
+    const playVideo = () => {
+      const playPromise = promoVideo.play();
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            // Video started playing successfully
+            console.log("Video playback started");
+          })
+          .catch((error) => {
+            console.log("Video play failed:", error);
+            // If autoplay fails, show unmute button
+            const unmuteIcon = unmuteButton.querySelector(".unmute-icon");
+            unmuteIcon.classList.add("muted");
+          });
+      }
+    };
+
+    // Try to play immediately
+    playVideo();
+
+    // Also try to play after a short delay
+    setTimeout(playVideo, 500);
   }
 
   function toggleSound() {
+    if (promoVideo.paused) {
+      promoVideo.play().catch((error) => {
+        console.log("Video play failed on unmute:", error);
+      });
+    }
     promoVideo.muted = !promoVideo.muted;
     const unmuteIcon = unmuteButton.querySelector(".unmute-icon");
 
