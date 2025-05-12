@@ -248,6 +248,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Force video to load
     promoVideo.load();
 
+    // Update unmute icon
+    const unmuteIcon = unmuteButton.querySelector(".unmute-icon");
+    unmuteIcon.classList.add("muted");
+
     // Try to play video with user interaction
     const playVideo = () => {
       const playPromise = promoVideo.play();
@@ -260,9 +264,6 @@ document.addEventListener("DOMContentLoaded", function () {
           })
           .catch((error) => {
             console.log("Video play failed:", error);
-            // If autoplay fails, show unmute button
-            const unmuteIcon = unmuteButton.querySelector(".unmute-icon");
-            unmuteIcon.classList.add("muted");
           });
       }
     };
