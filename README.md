@@ -12,8 +12,7 @@ An interactive geography quiz where users are prompted to identify European coun
 
 ## 🌐 Live Demo
 
-👉 [View Live Project](https://your-deployment-link.com)  
-*(Replace this with your actual deployed link)*
+👉 [View Live Project](https://wootag-setone.vercel.app/)  
 
 ---
 
