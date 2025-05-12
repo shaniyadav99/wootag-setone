@@ -1,95 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Geography Quiz</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ULAJH - Interactive Ad</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-    <!-- Initial Popup -->
-    <div class="initial-popup" id="initial-popup">
+  <div id="ad-container">
+    <!-- Stage 1: Animated Banner -->
+    <div id="stage1">
+      <div class="headline">WE ARE IN THE MIDDLE OF CONSPIRACY</div>
+      <div class="microphones">
+        <img src="./1.png" alt="Press Conference Microphones" class="mic-img" />
+      </div>
+      <div class="cta-text" id="banner-cta">FIND THE MASTERMIND BEHIND THE RAGING CONSPIRACY AND REVEAL THE SECRET NOW</div>
+    </div>
+
+    <!-- Stage 2: Geography Quiz -->
+    <div id="quiz-container" class="hidden">
+      <!-- Initial Popup -->
+      <div class="initial-popup" id="initial-popup">
         <div class="popup-content">
-            <h2 class="popup-title">Welcome!</h2>
-            <p class="popup-text">Ready to test your knowledge of European geography? Click start to begin the
-                challenge!</p>
-            <button class="popup-button" id="popup-button">Start</button>
+          <h2 class="popup-title">Welcome!</h2>
+          <p class="popup-text">Ready to test your knowledge of European geography? Click start to begin the challenge!</p>
+          <button class="popup-button" id="popup-button">Start</button>
         </div>
+      </div>
+
+      <!-- Intro Screen -->
+      <div class="screen intro-screen active">
+        <div class="intro-content">
+          <div class="intro-icon pulse"></div>
+          <h1 class="intro-title">Geography Challenge</h1>
+          <p class="intro-subtitle">Test your knowledge of European countries!</p>
+          <button class="cta-button" id="start-button">
+            <span class="button-text">START QUIZ</span>
+          </button>
+        </div>
+        <div class="intro-footer">
+          <p class="intro-footer-text">
+            FIND THE MASTERMINDS BEHIND THE RAGING CONSPIRACY AND REVEAL THE SECRET NOW
+          </p>
+        </div>
+      </div>
+
+      <!-- Quiz Screen -->
+      <div class="screen quiz-screen">
+        <div class="question-header">
+          <div class="progress-indicator">
+            <span class="question-counter">Question <span id="current-question">1</span>/<span id="total-questions">2</span></span>
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+          <h2 class="question-text" id="question-text"></h2>
+          <p class="map-instructions" id="map-instructions"></p>
+          <div class="drag-hint">Drag to navigate the map</div>
+        </div>
+
+        <div class="map-container">
+          <div class="europe-map" id="europe-map"></div>
+          <div class="feedback-overlay" id="feedback-overlay">
+            <div class="feedback-content">
+              <span class="feedback-icon"></span>
+              <span class="feedback-text"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Screen -->
+      <div class="screen video-screen">
+        <div class="video-container">
+          <img src="_materials/final.png" alt="ULAJH" class="final-image">
+          <div class="video-overlay">
+            <div class="video-wrapper">
+              <video id="promo-video" muted>
+                <source src="_materials/ulajh.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <button class="unmute-button" id="unmute-button" aria-label="Toggle sound">
+                <span class="unmute-icon muted"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="ad-container">
-        <!-- Intro Screen -->
-        <div class="screen intro-screen active">
-            <div class="intro-content">
-                <div class="intro-icon pulse"></div>
-                <h1 class="intro-title">Geography Challenge</h1>
-                <p class="intro-subtitle">Test your knowledge of European countries!</p>
-                <button class="cta-button" id="start-button">
-                    <span class="button-text">START QUIZ</span>
-                </button>
-            </div>
-            <div class="intro-footer">
-                <p class="intro-footer-text">
-                    FIND THE MASTERMINDS BEHIND THE RAGING CONSPIRACY AND REVEAL THE SECRET NOW
-                </p>
-            </div>
-        </div>
-
-        <!-- Quiz Screen -->
-        <div class="screen quiz-screen">
-            <div class="question-header">
-                <div class="progress-indicator">
-                    <span class="question-counter">Question <span id="current-question">1</span>/<span
-                            id="total-questions">2</span></span>
-                    <div class="progress-bar">
-                        <div class="progress-fill"></div>
-                    </div>
-                </div>
-                <h2 class="question-text" id="question-text"></h2>
-                <p class="map-instructions" id="map-instructions"></p>
-            </div>
-
-            <div class="map-container">
-                <div class="europe-map" id="europe-map">
-                    <!-- Map pins will be added dynamically via JS -->
-                </div>
-                <div class="feedback-overlay" id="feedback-overlay">
-                    <div class="feedback-content">
-                        <span class="feedback-icon"></span>
-                        <span class="feedback-text"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Video Screen -->
-        <div class="screen video-screen">
-            <div class="video-container">
-                <img src="_materials/final.png" alt="ULAJH" class="final-image">
-                <div class="video-overlay">
-                    <div class="video-wrapper">
-                        <video id="promo-video" muted>
-                            <source src="_materials/ulajh.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <button class="unmute-button" id="unmute-button">
-                            <span class="unmute-icon"></span>
-                        </button>
-                    </div>
-                    <div class="video-top-content">
-                        <!-- <button class="cta-button know-more-btn">Know More</button> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="data.js"></script>
-    <script src="europeMap.js"></script>
-    <script src="script.js"></script>
+  <script src="data.js"></script>
+  <script src="europeMap.js"></script>
+  <script src="script.js"></script>
 </body>
-
 </html>
